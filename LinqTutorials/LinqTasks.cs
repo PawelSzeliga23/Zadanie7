@@ -385,7 +385,17 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<object> Task15()
         {
-            IEnumerable<object> result = null;
+            IEnumerable<object> result = Emps
+                .Where(e => e.Job.Contains("A"))
+                .GroupBy(e => e.Job)
+                .Where(g => g.Count() > 2)
+                .Select(g => new
+                {
+                    Praca = g.Key,
+                    LiczbaPracownikow = g.Count()
+                })
+                .OrderByDescending(e => e.LiczbaPracownikow)
+                .ToList();
             //result =
             return result;
         }
@@ -395,7 +405,20 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<object> Task16()
         {
-            IEnumerable<object> result = null;
+            IEnumerable<object> result = Emps
+                .Select(e => new
+                {
+                    e.Ename,
+                    e.Job,
+                    e.HireDate
+                })
+                .Concat<object>(Depts.Select(d => new
+                {
+                    d.Deptno,
+                    d.Dname,
+                    d.Loc
+                }))
+                .ToList();
             //result =
             return result;
         }
